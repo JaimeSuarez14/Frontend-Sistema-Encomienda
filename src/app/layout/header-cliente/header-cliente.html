@@ -1,0 +1,19 @@
+<section class="fixed top-0 text- flex justify-between items-center px-18 p-8  w-full bg-red-600  text-white">
+  <div class="text-2xl font-bold">
+    PERUFAST
+  </div>
+  <nav>
+    <ul class="flex gap-6">
+      @for (item of itemsNavbar; track item.name) {
+      <li>
+        <a [routerLink]="item.ruta" class="flex flex-col items-center hover:text-blue-100"><img [src]="item.icono"
+            [alt]="item.name" /><span>{{item.name}}</span></a>
+      </li>
+      }
+    </ul>
+  </nav>
+  <div class="flex gap-2">
+    <img src="/iconos/user-round.svg" alt="">
+    <span>User</span>
+  </div>
+</section>
