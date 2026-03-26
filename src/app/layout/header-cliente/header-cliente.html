@@ -6,7 +6,7 @@
     <ul class="flex gap-6">
       @for (item of itemsNavbar; track item.name) {
       <li>
-        <a [routerLink]="item.ruta" class="flex flex-col items-center hover:text-blue-100"><img [src]="item.icono"
+        <a [routerLink]="item.ruta" class="flex flex-col items-center font-bold hover:text-blue-100 hover:scale-105 duration-200 transform transition-all"><img [src]="item.icono"
             [alt]="item.name" /><span>{{item.name}}</span></a>
       </li>
       }
