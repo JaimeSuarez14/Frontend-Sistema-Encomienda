@@ -1,0 +1,30 @@
+<div class="w-64 bg-orange-100 p-2 flex flex-col gap-2">
+
+  @for (item of itemsSidebar; track $index) {
+    <a [routerLink]="item.ruta"
+    class="flex pl-12 items-center w-full p-2  text-black transition duration-75 rounded-lg group bg-gray-100 hover:bg-gray-200 relative cursor-pointer font-bold">
+    @if (item.icono) {
+      <img src="./iconos/retroceso.svg" class="absolute top-4 left-2 font-bold text-2xl" alt="">
+    }
+    <span>Terrestre</span>
+  </a>
+  }
+
+  <a
+    class="flex pl-12 items-center w-full p-2  text-black transition duration-75 rounded-lg group bg-gray-100 hover:bg-gray-200 relative">
+    <img src="./iconos/retroceso.svg" class="absolute top-4 left-2 font-bold text-2xl" alt="">
+    <span>Terrestre</span>
+  </a>
+  <a
+    class="flex pl-12 items-center w-full p-2  text-black transition duration-75 rounded-lg group bg-gray-100 hover:bg-gray-200 relative">
+    <img src="./iconos/retroceso.svg" class="absolute top-4 left-2 font-bold text-2xl" alt="">
+    <span>Terrestre</span>
+  </a>
+  <a
+    class="flex pl-12 items-center w-full p-2  text-black transition duration-75 rounded-lg group bg-gray-100 hover:bg-gray-200 relative">
+    <img src="./iconos/retroceso.svg" class="absolute top-4 left-2 font-bold text-2xl" alt="">
+    <span>Terrestre</span>
+  </a>
+
+
+</div>

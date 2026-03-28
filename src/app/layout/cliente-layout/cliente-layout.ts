@@ -5,7 +5,7 @@ import { SidebarCliente } from "@layout/sidebar-cliente/sidebar-cliente";
 
 @Component({
   selector: 'app-cliente-layout',
-  imports: [HeaderCliente, RouterOutlet, SidebarCliente],
+  imports: [HeaderCliente, RouterOutlet],
   templateUrl: './cliente-layout.html',
   styleUrl: './cliente-layout.css',
 })
