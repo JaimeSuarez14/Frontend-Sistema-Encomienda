@@ -8,7 +8,8 @@
     "baseUrl": "./",
     "paths": {
       "@cliente/*": ["src/app/features/cliente/*"],
-      "@layout/*": ["src/app/layout/*"]
+      "@layout/*": ["src/app/layout/*"],
+      "@shared/*": ["src/app/shared/*"]
     }
   },
   "include": [
