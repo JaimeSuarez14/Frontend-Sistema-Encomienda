@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons";
+
 
 @theme {
 
@@ -14,6 +16,19 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  --animate-fade-out: fadeOut 0.9s ease-out;
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
     }
   }
 }

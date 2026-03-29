@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import {LucideIconNode, LucideHouse } from "@lucide/angular"
 
@@ -30,6 +30,20 @@ export class HeaderCliente {
       ruta: "/agencia",
       icono: "/iconos/map-pin.svg",
       name: "Agencias"
+    }
+  ]
+
+  dropdownOpen = signal(false);
+
+  toggleDropdown() {
+    this.dropdownOpen.update((isOpen) => !isOpen);
+  }
+
+  itemsdropdown = [
+    {
+      ruta: "/login",
+      icono: "bi-box-arrow-in-right",
+      name: "Iniciar Sesion"
     }
   ]
 
