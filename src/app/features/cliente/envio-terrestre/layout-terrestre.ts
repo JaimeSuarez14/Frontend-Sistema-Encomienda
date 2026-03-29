@@ -9,7 +9,9 @@ import { SidebarGeneric } from "@shared/components/sidebar-generic/sidebar-gener
     <main class="h-screen py-4 animate-fade-in-up ">
       <section class="flex items-stretch h-screen overflow-hidden px-18">
         <app-sidebar-generic />
-        <div class="flex-1"><router-outlet /></div>
+        <div class="flex-1">
+          <router-outlet />
+        </div>
       </section>
     </main>
   `,

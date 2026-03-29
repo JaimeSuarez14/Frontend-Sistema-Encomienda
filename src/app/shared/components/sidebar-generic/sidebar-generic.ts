@@ -12,7 +12,7 @@ export class SidebarGeneric {
     {
       ruta: '/',
       icono: '/iconos/retroceso.svg',
-      name: 'Home',
+      name: 'Terrestre',
     },
     {
       ruta: '/terrestre/pasos',
@@ -25,9 +25,9 @@ export class SidebarGeneric {
       name: 'Beneficios',
     },
     {
-      ruta: '/agencia',
-      icono: '/iconos/map-pin.svg',
-      name: 'Agencias',
+      ruta: '/terrestre/tarifas',
+      icono: '',
+      name: 'Tarifas',
     },
   ];
 }
