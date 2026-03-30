@@ -56,12 +56,11 @@ export class Login {
     event.preventDefault();
     this.loading.set(true)
     submit(this.loginForm, async () => {
-      console.log('submit');
+      console.log('Formulario enviado');
       await new Promise((resolve) => setTimeout(resolve, 3000));
       this.onReset();
+      this.loading.set(false)
     });
-    console.log(this.loginForm().value());
-    this.loading.set(false)
   }
 
   async onReset() {
