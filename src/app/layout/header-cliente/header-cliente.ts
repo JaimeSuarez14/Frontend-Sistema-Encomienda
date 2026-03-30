@@ -44,6 +44,11 @@ export class HeaderCliente {
       ruta: "/login",
       icono: "bi-box-arrow-in-right",
       name: "Iniciar Sesion"
+    },
+    {
+      ruta: "/register",
+      icono: "bi-person-add",
+      name: "Registrarse"
     }
   ]
 
