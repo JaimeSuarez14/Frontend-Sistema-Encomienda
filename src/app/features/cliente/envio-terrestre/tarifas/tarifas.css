@@ -1,0 +1,17 @@
+/* Lógica de deslizamiento basada en la posición del tab seleccionado */
+.sliding-window {
+  /* Por defecto en la primera */
+  transform: translateX(0%);
+}
+
+[ngTabList]:has([ngTab]:nth-child(1)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(0%);
+}
+
+[ngTabList]:has([ngTab]:nth-child(2)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(-33.333%);
+}
+
+[ngTabList]:has([ngTab]:nth-child(3)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(-66.666%);
+}

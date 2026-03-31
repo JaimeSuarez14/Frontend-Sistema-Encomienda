@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'button-ui',
@@ -9,4 +9,9 @@ import { Component, input } from '@angular/core';
 export class ButtonUi {
   name = input<string>('Conoce Más');
   icon = input<string>('/iconos/arrow-right.svg');
+  action = output<void>();
+
+  emitir(){
+    this.action.emit();
+  }
 }

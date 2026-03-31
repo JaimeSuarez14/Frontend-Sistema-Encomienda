@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonUi } from "@shared/components/button-ui/button-ui";
 @Component({
   selector: 'app-envio-terrestre',
@@ -7,5 +8,9 @@ import { ButtonUi } from "@shared/components/button-ui/button-ui";
   styleUrl: './envio-terrestre.css',
 })
 export class EnvioTerrestre {
+  router = inject(Router)
 
+  irPasos(){
+    this.router.navigate(["/terrestre/pasos"])
+  }
 }
