@@ -46,7 +46,7 @@ export class Login {
   });
 
   ifFieldInvalid(fieldName: keyof LoginData) {
-    const fieldSignal = this.loginForm[fieldName];
+    const fieldSignal = this.loginForm[fieldName]; //este fila estamos
     if (!fieldSignal) return false;
     const field = fieldSignal();
     return field && field.touched() && field.errors().length > 0;

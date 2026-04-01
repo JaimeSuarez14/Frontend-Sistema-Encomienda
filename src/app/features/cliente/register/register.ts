@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { form, required, FormField } from '@angular/forms/signals';
+import { form, required, FormField, submit } from '@angular/forms/signals';
 
 type User = {
   nombre: string;
@@ -41,9 +41,14 @@ export class Register {
 
   onSubmit(event: Event) {
     event.preventDefault();
-    this.loading.set(false);
-    console.log('Registro enviado');
     this.loading.set(true);
+    submit(this.userForm, async () => {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      console.log('Formulario enviado');
+      console.log(this.userForm().value());
+      this.onResetForm();
+      this.loading.set(false);
+    });
   }
 
   ifFieldInvalid(fieldName: keyof User) {
@@ -51,5 +56,9 @@ export class Register {
     if (!fieldSignal) return false;
     const field = fieldSignal();
     return field && field.touched() && field.errors().length > 0;
+  }
+
+  onResetForm() {
+    this.userForm().reset(this.INITIALSTATE);
   }
 }
