@@ -19,7 +19,8 @@
         </button>
 
         <div id="indicator" class="absolute bottom-0 h-1 bg-blue-500 transition-all duration-300 w-1/3 "
-          [ngClass]="{ 'left-0': tabs()[0], 'left-[33.33%]': tabs()[1], 'left-[66.66%]': tabs()[2] }"></div>
+          [ngClass]="{ 'left-0': tabs()[0], 'left-[33.33%]': tabs()[1], 'left-[66.66%]': tabs()[2] }">
+        </div>
       </div>
 
       <div id="sliding-content" [class]="' flex w-[300%] transition-transform  duration-500 ease-in-out '" [ngClass]="{ 'translate-x-0': tabs()[0],
@@ -48,31 +49,34 @@
   </div>
 </div>
 @if (modal()) {
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" animate.leave="animate-scale-down"(click)="openBox()">
 
-  <div class="bg-white p-6 rounded-lg relative w-lg animate-fade-in-up border-2 border-blue-800">
-    <i class="bi bi-x-circle absolute top-2 right-2 cursor-pointer text-red-600 font-bold text-2xl"
+  <div class="bg-white p-6 rounded-lg relative w-lg animate-scale-up border-2 border-blue-800" (click)="$event.stopPropagation()">
+    <i class="bi bi-x-circle absolute top-3 right-3 cursor-pointer text-red-500 hover:text-red-700 transition-all duration-300 text-2xl hover:scale-105"
       (click)="openBox()"></i>
     <p class="text-black py-2 font-medium">Lista del Paquetes</p>
-    <div class="h-100 overflow-hidden flex  rounded-lg border border-white/10 bg-slate-900">
-      <div class="border border-gray-900 flex flex-col">
+    <div class="h-60 overflow-hidden flex  rounded-lg border border-white/10 bg-slate-900">
+      <div class="relative border border-gray-900 flex flex-col">
         <button (click)="moveTabsModal(0)"
-          class="tab-btn w-full flex-1 cursor-pointer border-r-3 border-white p-3 text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
+          class="tab-btn w-full flex-1 cursor-pointer  p-3 text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
           XS
         </button>
         <button (click)="moveTabsModal(1)"
-          class="tab-btn w-full flex-1 cursor-pointer py-3 border-r-3 border-white text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
+          class="tab-btn w-full flex-1 cursor-pointer py-3  text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
           S
         </button>
         <button (click)="moveTabsModal(2)"
-          class="tab-btn w-full flex-1 cursor-pointer py-3 border-r-3 border-white text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
+          class="tab-btn w-full flex-1 cursor-pointer py-3  text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
           M
         </button>
         <button (click)="moveTabsModal(3)"
-          class="tab-btn w-full flex-1 cursor-pointer py-3 border-r-3 border-white text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
+          class="tab-btn w-full flex-1 cursor-pointer py-3  text-center transition-all duration-300 text-white/60 hover:bg-blue-500/5 outline-none">
           L
         </button>
+        <div id="indicator" class="absolute right-0 w-1 bg-blue-400 transition-all duration-300 h-1/4 "
+          [ngClass]="{ 'top-0': tabsModal()[0], 'top-[25%]': tabsModal()[1], 'top-[50%]': tabsModal()[2], 'top-[75%]': tabsModal()[3] }"></div>
       </div>
+
       <div [class]="'flex-1 flex flex-col h-[400%] transition-transform  duration-500 ease-in-out '" [ngClass]="
       { 'translate-y-0': tabsModal()[0],
         '-translate-y-1/4': tabsModal()[1],
@@ -90,18 +94,17 @@
           <button (click)="openBox()" class="p-2 rounded bg-green-500">Ver Precios</button>
         </div>
 
-        <div class="grid min-h-100 h-full place-items-center p-4 text-white">
+        <div class="grid h-full place-items-center p-4 text-white">
           <p>Cotize su carga con nosotros en linea</p>
           <button class="p-2 rounded bg-green-500">Whatsapp</button>
         </div>
 
-        <div class="grid min-h-100 h-full place-items-center p-4 text-white">
+        <div class="grid h-full place-items-center p-4 text-white">
           <p>Cotize su carga con nosotros en linea</p>
           <button class="p-2 rounded bg-green-500">Whatsapp</button>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 }
