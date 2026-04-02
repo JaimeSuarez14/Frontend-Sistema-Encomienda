@@ -48,10 +48,11 @@
     </div>
   </div>
 </div>
-@if (modal()) {
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" animate.leave="animate-scale-down"(click)="openBox()">
-
-  <div class="bg-white p-6 rounded-lg relative w-lg animate-scale-up border-2 border-blue-800" (click)="$event.stopPropagation()">
+@if ( modal() ) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+  animate.leave="animate-scale-down" (click)="openBox()">
+  <div class="bg-white p-6 rounded-lg relative w-lg animate-scale-up border-2 border-blue-800"
+    (click)="$event.stopPropagation()">
     <i class="bi bi-x-circle absolute top-3 right-3 cursor-pointer text-red-500 hover:text-red-700 transition-all duration-300 text-2xl hover:scale-105"
       (click)="openBox()"></i>
     <p class="text-black py-2 font-medium">Lista del Paquetes</p>
@@ -74,7 +75,8 @@
           L
         </button>
         <div id="indicator" class="absolute right-0 w-1 bg-blue-400 transition-all duration-300 h-1/4 "
-          [ngClass]="{ 'top-0': tabsModal()[0], 'top-[25%]': tabsModal()[1], 'top-[50%]': tabsModal()[2], 'top-[75%]': tabsModal()[3] }"></div>
+          [ngClass]="{ 'top-0': tabsModal()[0], 'top-[25%]': tabsModal()[1], 'top-[50%]': tabsModal()[2], 'top-[75%]': tabsModal()[3] }">
+        </div>
       </div>
 
       <div [class]="'flex-1 flex flex-col h-[400%] transition-transform  duration-500 ease-in-out '" [ngClass]="
@@ -83,25 +85,28 @@
         '-translate-y-2/4': tabsModal()[2], '-translate-y-3/4': tabsModal()[3],
          }">
         <div class="grid  h-full place-items-center p-4 text-white">
-          <p class="font-light">Documentos simples en
-            sobre manila / Tamaño A4</p>
-          <span class="text-2xl font-bold text-yellow-500">S/ 8.00</span>
-
+          <p class="font-bold text-lg">Paquete XS</p>
+          <p class="font-light">20 x 15 x 12 cm Peso máx. 500 gr</p>
+          <span class="text-2xl font-bold text-yellow-500">S/ 10.00</span>
         </div>
 
         <div class="grid  h-full place-items-center p-4 text-white">
-          <p>Lista del Paquetes</p>
-          <button (click)="openBox()" class="p-2 rounded bg-green-500">Ver Precios</button>
+          <p class="font-bold text-lg">Paquete S</p>
+          <p class="font-light">30 x 20 x 12 cm Peso máx. 2 kg</p>
+          <span class="text-2xl font-bold text-yellow-500">S/ 12.00</span>
         </div>
 
         <div class="grid h-full place-items-center p-4 text-white">
-          <p>Cotize su carga con nosotros en linea</p>
-          <button class="p-2 rounded bg-green-500">Whatsapp</button>
+          <p class="font-bold text-lg">Paquete M</p>
+          <p class="font-light">30 x 24 x 20 cm Peso máx. 5 kg</p>
+          <button class="p-2 rounded bg-red-600 hover:bg-amber-600">Cotizar</button>
         </div>
 
         <div class="grid h-full place-items-center p-4 text-white">
+          <p class="font-bold text-lg">Paquete L</p>
+          <p class="font-light">40 x 30 x 24 cm Peso máx. 10 kg</p>
           <p>Cotize su carga con nosotros en linea</p>
-          <button class="p-2 rounded bg-green-500">Whatsapp</button>
+          <button class="p-2 rounded bg-red-600 hover:bg-amber-600">Cotizar</button>
         </div>
       </div>
     </div>

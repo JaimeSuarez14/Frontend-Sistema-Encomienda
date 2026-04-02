@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { SidebarGeneric } from "@shared/components/sidebar-generic/sidebar-generic";
 
 @Component({
-  selector: 'layout-terrestre',
+  selector: 'layout-perufast-pro',
   imports: [RouterOutlet, SidebarGeneric],
   template: `
     <main class="h-screen py-4 animate-fade-in-up ">
@@ -18,27 +18,17 @@ import { SidebarGeneric } from "@shared/components/sidebar-generic/sidebar-gener
   styles: [],
   standalone: true,
 })
-export class LayoutTerrestre {
+export class PerufastProLayout {
   public itemsSidebar = [
     {
       ruta: '/',
       icono: '/iconos/retroceso.svg',
-      name: 'Terrestre',
+      name: 'Envio',
     },
     {
-      ruta: '/terrestre/pasos',
+      ruta: '/login',
       icono: '',
-      name: 'Pasos',
-    },
-    {
-      ruta: '/terrestre/beneficios',
-      icono: '',
-      name: 'Beneficios',
-    },
-    {
-      ruta: '/terrestre/tarifas',
-      icono: '',
-      name: 'Tarifas',
+      name: 'Peru fast Pro',
     },
   ];
 }

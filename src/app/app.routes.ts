@@ -25,6 +25,13 @@ export const routes: Routes = [
         loadChildren: () => import('@cliente/envio-terrestre/routes').then((m) => m.routes),
       },
       {
+        path: 'perufast-pro',
+        title: 'perufast Pro',
+        loadComponent: () =>
+          import('@cliente/home/perufast-pro/perufast-pro-layout').then((m) => m.PerufastProLayout),
+        loadChildren: () => import('@cliente/home/perufast-pro/routes').then((m) => m.routes),
+      },
+      {
         path: 'login',
         title: 'Login',
         component: Login,

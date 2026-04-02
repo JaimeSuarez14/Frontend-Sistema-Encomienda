@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from "@angular/router";
+
+type ItemSidebar = {
+  ruta: string;
+  icono: string;
+  name: string;
+};
 
 @Component({
   selector: 'app-sidebar-generic',
@@ -8,26 +14,8 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   styleUrl: './sidebar-generic.css',
 })
 export class SidebarGeneric {
-  public itemsSidebar = [
-    {
-      ruta: '/',
-      icono: '/iconos/retroceso.svg',
-      name: 'Terrestre',
-    },
-    {
-      ruta: '/terrestre/pasos',
-      icono: '',
-      name: 'Pasos',
-    },
-    {
-      ruta: '/terrestre/beneficios',
-      icono: '',
-      name: 'Beneficios',
-    },
-    {
-      ruta: '/terrestre/tarifas',
-      icono: '',
-      name: 'Tarifas',
-    },
-  ];
+
+  itemsSidebar = input<ItemSidebar[]>()
+
+
 }

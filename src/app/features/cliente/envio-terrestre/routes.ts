@@ -1,4 +1,3 @@
-import { PasosTerrestre } from './pasos-terrestre/pasos-terrestre';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
