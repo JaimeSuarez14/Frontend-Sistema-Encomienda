@@ -80,8 +80,8 @@
               class="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-gray-200  "
               aria-controls="dropdown-crud" data-collapse-toggle="dropdown-crud" (click)="open(1)">
               <svg
-                class="shrink-0 w-6 h-6 text-[#EE2A2F] transition duration-75 group-hover:text-black  dark:group-hover:text-green-300" fill="#EE2A2F"
-                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                class="shrink-0 w-6 h-6 text-[#EE2A2F] transition duration-75 group-hover:text-black  dark:group-hover:text-green-300"
+                fill="#EE2A2F" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path clip-rule="evenodd" fill-rule="evenodd"
                   d="M.99 5.24A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25l.01 9.5A2.25 2.25 0 0116.76 17H3.26A2.267 2.267 0 011 14.74l-.01-9.5zm8.26 9.52v-.625a.75.75 0 00-.75-.75H3.25a.75.75 0 00-.75.75v.615c0 .414.336.75.75.75h5.373a.75.75 0 00.627-.74zm1.5 0a.75.75 0 00.627.74h5.373a.75.75 0 00.75-.75v-.615a.75.75 0 00-.75-.75H11.5a.75.75 0 00-.75.75v.625zm6.75-3.63v-.625a.75.75 0 00-.75-.75H11.5a.75.75 0 00-.75.75v.625c0 .414.336.75.75.75h5.25a.75.75 0 00.75-.75zm-8.25 0v-.625a.75.75 0 00-.75-.75H3.25a.75.75 0 00-.75.75v.625c0 .414.336.75.75.75H8.5a.75.75 0 00.75-.75zM17.5 7.5v-.625a.75.75 0 00-.75-.75H11.5a.75.75 0 00-.75.75V7.5c0 .414.336.75.75.75h5.25a.75.75 0 00.75-.75zm-8.25 0v-.625a.75.75 0 00-.75-.75H3.25a.75.75 0 00-.75.75V7.5c0 .414.336.75.75.75H8.5a.75.75 0 00.75-.75z">
                 </path>
@@ -97,7 +97,8 @@
             <ul id="dropdown-crud" [class]="( itemstoogle()[1] && 'hidden')+' py-2 space-y-2'">
               <li>
                 <a href="/perufast-pro"
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">PeruFast Pro</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">PeruFast
+                  Pro</a>
               </li>
 
             </ul>
@@ -124,18 +125,10 @@
             </button>
             <ul id="dropdown-pages" [class]="(itemstoogle()[2] && 'hidden')+' py-2 space-y-2'">
               <li>
-                <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Pricing</a>
+                <a routerLink="/store"
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Productos</a>
               </li>
-              <li>
-                <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Maintenance</a>
-              </li>
-              <li>
-                <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">404
-                  not found</a>
-              </li>
+
 
             </ul>
           </li>
@@ -150,7 +143,7 @@
                   d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                   clip-rule="evenodd"></path>
               </svg>
-              <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Informes</span>
+              <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Noticias</span>
               <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -161,28 +154,23 @@
             <ul id="dropdown-auth" [class]="( itemstoogle()[3] && 'hidden')+' py-2 space-y-2'">
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  ">Sign
-                  in</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Novedades</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  ">Sign
-                  up</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Preguntas Frecuentes</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  ">Forgot
-                  password</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Restricciones</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  ">Reset
-                  password</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Embalajes</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  ">Profile
-                  lock</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Garantias</a>
               </li>
             </ul>
           </li>
@@ -208,11 +196,11 @@
             <ul id="dropdown-playground" [class]="( itemstoogle()[4] && 'hidden')+' py-2 space-y-2'">
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Stacked</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Contactanos</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Sidebar</a>
+                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Sobre nosotros</a>
               </li>
             </ul>
           </li>

@@ -32,6 +32,13 @@ export const routes: Routes = [
         loadChildren: () => import('@cliente/home/perufast-pro/routes').then((m) => m.routes),
       },
       {
+        path: 'store',
+        title: 'Tienda',
+        loadComponent: () =>
+          import('@cliente/home/tienda/layout-store').then((m) => m.LayoutStore),
+        loadChildren: () => import('@cliente/home/tienda/routes').then((m) => m.routes),
+      },
+      {
         path: 'login',
         title: 'Login',
         component: Login,
