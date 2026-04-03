@@ -1,9 +1,9 @@
-<section class="text-xl z-20 flex justify-between items-center px-18 p-8  w-full bg-red-600  text-white">
-  <div class="text-2xl font-bold animate-bounce" >
+<section class=" z-20 flex justify-between items-center px-18 p-8  w-full bg-red-600  text-white space-x-5">
+  <div class="text-2xl font-bold animate-bounce">
     PERUFAST
   </div>
-  <nav>
-    <ul class="flex gap-6">
+  <nav class="flex-1 hidden md:flex justify-between items-center md:text-xl  ">
+    <ul class="flex space-x-5">
       @for (item of itemsNavbar; track item.name) {
       <li>
         <a [routerLink]="item.ruta"
@@ -12,25 +12,67 @@
       </li>
       }
     </ul>
-  </nav>
-  <button (click)="toggleDropdown()" type="button"
-    class="flex  gap-1 items-center relative p-1 rounded-lg hover:bg-orange-600">
-    <img src="/iconos/user-round.svg" class="font-bold w-10" alt="">
-    <span>User</span>
-    @if (dropdownOpen()) {
-    <div
-      [class]="'z-10 absolute text-black top-full right-0 min-w-44 bg-white py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ' "
-      animate.leave="animate-fade-out" animate.enter="animate-fade-in-up">
-      <div class="pt-0.5 px-3 mb-1 border-b border-gray-200 ">
-        @for (item of itemsdropdown; track $index) {
-        <a [routerLink]="item.ruta" class="font-medium border-b-2 border-gray-300 mb-2 text-gray-800 flex p-1 bg-orange-100 rounded-lg items-center gap-3 hover:text-blue-600">
-          <i [class]="'bi '+ item.icono +' text-2xl'"></i>
-          <span  class=" text-base ">{{ item.name }}</span>
-        </a>
-        }
+    <button (click)="toggleDropdown()" type="button"
+      class="flex  gap-1 items-center relative p-1 rounded-lg hover:bg-orange-600">
+      <img src="/iconos/user-round.svg" class="font-bold w-10" alt="">
+      <span>User</span>
+      @if (dropdownOpen()) {
+      <div
+        [class]="'z-10 absolute text-black top-full right-0 min-w-44 bg-white py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ' "
+        animate.leave="animate-fade-out" animate.enter="animate-fade-in-up">
+        <div class="pt-0.5 px-3 mb-1 border-b border-gray-200 ">
+          @for (item of itemsdropdown; track $index) {
+          <a [routerLink]="item.ruta"
+            class="font-medium border-b-2 border-gray-300 mb-2 text-gray-800 flex p-1 bg-orange-100 rounded-lg items-center gap-3 hover:text-blue-600">
+            <i [class]="'bi '+ item.icono +' text-2xl'"></i>
+            <span class=" text-base ">{{ item.name }}</span>
+          </a>
+          }
 
+        </div>
       </div>
-    </div>
-    }
+      }
+    </button>
+  </nav>
+
+  <button class="md:hidden p-2" (click)="toggleMenu()">
+    <i class="bi bi-list text-2xl"></i>
   </button>
 </section>
+
+<!-- BACKDROP -->
+@if(menuOpen()){
+<div class="fixed inset-0 bg-black/50 z-40" (click)="toggleMenu()">
+</div>
+}
+
+<div (click)="$event.stopPropagation()"
+  [class]="(!menuOpen() ? '-bottom-76' : 'bottom-0') +' fixed  md:hidden left-0 w-full bg-red-600 text-white z-50 rounded-t-2xl shadow-lg transition-all duration-300 '">
+
+  <div class="p-6 relative">
+    <i class="bi bi-x-circle absolute top-3 right-3 cursor-pointer text-white hover:text-red-300 transition-all duration-300 text-2xl hover:scale-105 ease-in-out"
+      (click)="toggleMenu()"></i>
+    <ul class="flex flex-col gap-4" (click)="toggleMenu()">
+      @for (item of itemsNavbar; track item.name) {
+      <li>
+        <a [routerLink]="item.ruta" class="flex items-center gap-3 text-lg font-bold">
+
+          <img [src]="item.icono" class="w-6" />
+          {{ item.name }}
+        </a>
+      </li>
+      }
+      @for (item of itemsdropdown; track item.name) {
+      <li>
+        <a [routerLink]="item.ruta" class="flex items-center gap-3 text-lg font-bold">
+
+          <i [class]="'bi '+ item.icono +' text-2xl'"></i>
+          {{ item.name }}
+        </a>
+      </li>
+      }
+    </ul>
+
+  </div>
+
+</div>

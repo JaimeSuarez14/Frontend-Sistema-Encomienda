@@ -64,14 +64,14 @@
               <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Servicios</span>
               <img src="img/option.svg" class="w-6 h-6" alt="option">
             </button>
-            <ul id="dropdown-layouts" [class]="( itemstoogle()[0] && 'hidden')+' py-2 space-y-2'">
+            <ul id="dropdown-layouts" [class]="( itemstoogle()[0] && 'hidden')+' py-2 space-y-2 bg-orange-100'">
               <li>
                 <a routerLink="/terrestre"
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Terrestre</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Terrestre</a>
               </li>
               <li>
                 <a href=""
-                  class=" flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Sidebar</a>
+                  class=" flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Aereo</a>
               </li>
             </ul>
           </li>
@@ -94,10 +94,10 @@
                   clip-rule="evenodd"></path>
               </svg>
             </button>
-            <ul id="dropdown-crud" [class]="( itemstoogle()[1] && 'hidden')+' py-2 space-y-2'">
+            <ul id="dropdown-crud" [class]="( itemstoogle()[1] && 'hidden')+' py-2 space-y-2 bg-orange-100'">
               <li>
                 <a href="/perufast-pro"
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">PeruFast
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">PeruFast
                   Pro</a>
               </li>
 
@@ -123,16 +123,16 @@
                   clip-rule="evenodd"></path>
               </svg>
             </button>
-            <ul id="dropdown-pages" [class]="(itemstoogle()[2] && 'hidden')+' py-2 space-y-2'">
+            <ul id="dropdown-pages" [class]="(itemstoogle()[2] && 'hidden')+' py-2 space-y-2 bg-orange-100'">
               <li>
                 <a routerLink="/store"
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Productos</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Productos</a>
               </li>
 
 
             </ul>
           </li>
-          <li>
+          <li >
             <button type="button"
               class="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-gray-200  "
               aria-controls="dropdown-auth" data-collapse-toggle="dropdown-auth" (click)="open(3)">
@@ -151,28 +151,32 @@
                   clip-rule="evenodd"></path>
               </svg>
             </button>
-            <ul id="dropdown-auth" [class]="( itemstoogle()[3] && 'hidden')+' py-2 space-y-2'">
+            @if (!itemstoogle()[3]) {
+            <ul id="dropdown-auth" [class]="' py-2 space-y-2 animate-fade-in-down bg-orange-100'">
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Novedades</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Novedades</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Preguntas Frecuentes</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Preguntas
+                  Frecuentes</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Restricciones</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Restricciones</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Embalajes</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Embalajes</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Garantias</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200  ">Garantias</a>
               </li>
             </ul>
+            }
+
           </li>
           <li>
             <button type="button"
@@ -193,14 +197,15 @@
                   clip-rule="evenodd"></path>
               </svg>
             </button>
-            <ul id="dropdown-playground" [class]="( itemstoogle()[4] && 'hidden')+' py-2 space-y-2'">
+            <ul id="dropdown-playground" [class]="( itemstoogle()[4] && 'hidden')+' py-2 space-y-2 bg-orange-100'">
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Contactanos</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Contactanos</a>
               </li>
               <li>
                 <a href=""
-                  class="flex items-center p-2 text-base text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Sobre nosotros</a>
+                  class="flex items-center p-2 text-base bg-red-100 text-black transition duration-75 rounded-lg pl-11 group hover:bg-gray-200">Sobre
+                  nosotros</a>
               </li>
             </ul>
           </li>

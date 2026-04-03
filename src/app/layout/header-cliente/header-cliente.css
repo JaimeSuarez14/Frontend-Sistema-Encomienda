@@ -5,3 +5,11 @@
     opacity 500ms ease-out,
     transform 500ms ease-out;
 }
+
+.translate-y-fulla {
+  transform: translateY(100%);
+}
+
+.translate-y-end {
+  transform: translateY(0);
+}
