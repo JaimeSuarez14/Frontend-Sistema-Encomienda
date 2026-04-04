@@ -1,3 +1,4 @@
+import { Dashboard } from './features/admin/dashboard/dashboard';
 import { LayoutTerrestre } from './features/cliente/envio-terrestre/layout-terrestre';
 import { Routes } from '@angular/router';
 import { ClienteLayout } from '@layout/cliente-layout/cliente-layout';
@@ -49,6 +50,11 @@ export const routes: Routes = [
         component: Register,
       },
     ],
+  },
+  {
+    path: "dashboard",
+    title: "Panel de control",
+    loadComponent: () => import('@admin/dashboard/dashboard').then((m) => m.Dashboard),
   },
   {
     path: '**',

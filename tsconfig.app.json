@@ -8,6 +8,7 @@
     "baseUrl": "./",
     "paths": {
       "@cliente/*": ["src/app/features/cliente/*"],
+      "@admin/*": ["src/app/features/admin/*"],
       "@layout/*": ["src/app/layout/*"],
       "@shared/*": ["src/app/shared/*"]
     }
