@@ -1,5 +1,6 @@
+import { routes } from './../home/tienda/routes';
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   email,
   form,
@@ -22,6 +23,7 @@ interface LoginData {
   styleUrl: './login.css',
 })
 export class Login {
+  router = inject(Router);
   INITIALSTATE : LoginData=  {
     email: '',
     password: '',
@@ -57,9 +59,19 @@ export class Login {
     this.loading.set(true)
     submit(this.loginForm, async () => {
       console.log('Formulario enviado');
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      this.onReset();
+      const resul = await new Promise((resolve, reject) => setTimeout(
+        () => {
+          if(this.loginForm().value().email === "jaisua8@gmail.com" && this.loginForm().value().password === "12345"){
+            resolve(true);
+          }resolve(false)
+        }, 3000));
+      if(resul){
+        this.router.navigate(['/dashboard']);
+        this.loading.set(false)
+      }else {
+        this.onReset();
       this.loading.set(false)
+      }
     });
   }
 
