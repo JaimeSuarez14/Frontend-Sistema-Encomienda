@@ -1,0 +1,85 @@
+<section class="bg-[#f4f5f7] py-6 sm:py-10 text-base">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <article class="rounded-[2.5rem] bg-[#f4f5f7] p-4 sm:p-8 lg:p-10">
+      <div class="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+        <div class="space-y-6 fade-in-up">
+          <div class="inline-flex rounded-[2rem] bg-[#dbe8f1] px-6 py-5 text-center shadow-sm bubble-pop">
+            <p class="max-w-[260px] text-lg font-extrabold leading-tight text-[#153169] sm:text-[1.5rem]">
+              Encuentra la caja perfecta para tus envíos.
+            </p>
+          </div>
+
+          <div class="mx-auto w-full max-w-md box-enter">
+            <svg viewBox="0 0 420 260" class="box-float w-full" role="img" aria-label="Ilustración de caja Shalom">
+              <g class="drop-shadow-[0_10px_14px_rgba(15,23,42,0.2)]">
+                <polygon points="98,92 248,80 326,106 175,118" fill="#ff6d82"></polygon>
+                <polygon points="98,92 175,118 175,204 98,179" fill="#e42542"></polygon>
+                <polygon points="175,118 326,106 323,188 175,204" fill="#f5314f"></polygon>
+              </g>
+
+              <text x="211" y="165" fill="#ffffff" font-size="20" font-weight="700" font-style="italic">PeruFast</text>
+              <circle cx="126" cy="149" r="19" fill="none" stroke="#ffffff" stroke-width="3"></circle>
+              <path d="M118 150 q8 10 16 0" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path>
+              <circle cx="120" cy="142" r="2.7" fill="#ffffff"></circle>
+              <circle cx="132" cy="142" r="2.7" fill="#ffffff"></circle>
+
+              <line x1="92" y1="187" x2="172" y2="211" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="98" y1="195" x2="98" y2="180" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="172" y1="220" x2="172" y2="205" stroke="#6b7280" stroke-width="2"></line>
+              <text x="123" y="233" fill="#4b5563" font-size="28" font-weight="700" > {{selectedBox().width }} </text>
+
+              <line x1="172" y1="211" x2="329" y2="195" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="172" y1="220" x2="172" y2="205" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="329" y1="204" x2="329" y2="189" stroke="#6b7280" stroke-width="2"></line>
+              <text x="242" y="228" fill="#4b5563" font-size="28" font-weight="700">{{ selectedBox().length }}</text>
+
+              <line x1="335" y1="107" x2="335" y2="188" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="328" y1="107" x2="342" y2="107" stroke="#6b7280" stroke-width="2"></line>
+              <line x1="328" y1="188" x2="342" y2="188" stroke="#6b7280" stroke-width="2"></line>
+              <text x="344" y="152" fill="#4b5563" font-size="28" font-weight="700">{{ selectedBox().height }}</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="space-y-6 fade-in-right">
+          <div>
+            <h2 class="text-3xl font-extrabold text-[#f42b38] sm:text-4xl">Caja PeruFast</h2>
+            <p class="mt-1 text-2xl font-semibold text-slate-700">{{ dimensionsLabel() }}</p>
+            <p class="mt-2 text-xl py-4 font-extrabold text-[#1a2f69] price-pulse sm:text-2xl">{{ formattedPrice() }}</p>
+          </div>
+
+          <div class="relative rounded-[2rem] bg-[#cde9f4] px-5 py-6 sm:px-7">
+            <span class="absolute -top-5 left-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#7ab9db] text-[#113168] shadow-md">
+              <i class="bi bi-megaphone-fill text-3xl" aria-hidden="true"></i>
+            </span>
+            <span class="absolute -top-7 left-[4.5rem] inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f42b38] text-2xl font-extrabold text-white shadow-md">
+              %
+            </span>
+
+            <p class="pl-20 text-lg leading-tight text-[#17336a] sm:text-[1rem]">
+              ¡Adquiere tus productos en
+              <span class="font-extrabold">tu agencia más cercana!</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start fade-in-up">
+        @for (box of boxOptions; track box.size) {
+          <button
+            type="button"
+            class="inline-flex h-14 w-14 items-center justify-center rounded-full border text-2xl font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+            [ngClass]="
+              selectedSize() === box.size
+                ? 'border-[#f42b38] bg-[#f42b38] text-white shadow-lg shadow-red-200'
+                : 'border-[#f42b38] bg-transparent text-[#f42b38] hover:bg-[#f42b38]/10'
+            "
+            (click)="selectSize(box.size)"
+          >
+            {{ box.size }}
+          </button>
+        }
+      </div>
+    </article>
+  </div>
+</section>
