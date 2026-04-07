@@ -18,10 +18,8 @@
   <button
     type="button"
     aria-label="Cerrar menú"
-    class="fixed inset-0 z-30 bg-slate-950/45 backdrop-blur-[1px] transition-opacity duration-300 md:hidden"
-    [class.opacity-100]="isMenuOpen"
-    [class.opacity-0]="!isMenuOpen"
-    [class.pointer-events-none]="!isMenuOpen"
+    [class]="'fixed inset-0 z-30 bg-slate-950/45 backdrop-blur-[1px] transition-opacity duration-300 md:hidden ' +(isMenuOpen ? 'opacity-100 ' : 'opacity-0 pointer-events-none')"
+
     (click)="closeMenu()"
   ></button>
 

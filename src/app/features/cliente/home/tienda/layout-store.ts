@@ -6,8 +6,8 @@ import { SidebarGeneric } from "@shared/components/sidebar-generic/sidebar-gener
   selector: 'layout-store',
   imports: [RouterOutlet, SidebarGeneric],
   template: `
-    <main class="h-screen py-4 animate-fade-in-up ">
-      <section class="flex items-stretch h-screen overflow-hidden px-18">
+    <main class="h-screen lg:py-4 animate-fade-in-up ">
+      <section class="flex items-stretch h-screen overflow-hidden lg:px-18">
         <app-sidebar-generic [itemsSidebar]="itemsSidebar" />
         <div class="flex-1">
           <router-outlet />
