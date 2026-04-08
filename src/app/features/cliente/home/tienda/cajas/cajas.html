@@ -1,10 +1,10 @@
-<section class="bg-[#f4f5f7] py-6 sm:py-10 text-base">
+<section class="bg-[#f4f5f7] py-6 lg:py-10 text-base">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <article class="rounded-[2.5rem] bg-[#f4f5f7] p-4 sm:p-8 lg:p-10">
       <div class="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-center">
-        <div class="space-y-6 fade-in-up">
-          <div class="inline-flex rounded-[2rem] bg-[#dbe8f1] px-6 py-5 text-center shadow-sm bubble-pop">
-            <p class="max-w-[260px] text-lg font-extrabold leading-tight text-[#153169] sm:text-[1.5rem]">
+        <div class="space-y-3 lg:space-y-6 fade-in-up">
+          <div class="inline-flex rounded-4xl bg-[#dbe8f1] px-6 py-5 text-center shadow-sm bubble-pop">
+            <p class="max-w-65 text-lg font-extrabold leading-tight text-[#153169] sm:text-[1.1rem]">
               Encuentra la caja perfecta para tus envíos.
             </p>
           </div>
@@ -43,16 +43,16 @@
 
         <div class="space-y-6 fade-in-right">
           <div>
-            <h2 class="text-3xl font-extrabold text-[#f42b38] sm:text-4xl">Caja PeruFast</h2>
-            <p class="mt-1 text-2xl font-semibold text-slate-700">{{ dimensionsLabel() }}</p>
+            <h2 class="text-xl font-extrabold text-[#f42b38] sm:text-4xl">Caja PeruFast</h2>
+            <p class="mt-1 text-lg font-semibold text-slate-700">{{ dimensionsLabel() }}</p>
             <p class="mt-2 text-xl py-4 font-extrabold text-[#1a2f69] price-pulse sm:text-2xl">{{ formattedPrice() }}</p>
           </div>
 
-          <div class="relative rounded-[2rem] bg-[#cde9f4] px-5 py-6 sm:px-7">
+          <div class="relative rounded-4xl bg-[#cde9f4] px-5 py-6 sm:px-7">
             <span class="absolute -top-5 left-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#7ab9db] text-[#113168] shadow-md">
               <i class="bi bi-megaphone-fill text-3xl" aria-hidden="true"></i>
             </span>
-            <span class="absolute -top-7 left-[4.5rem] inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f42b38] text-2xl font-extrabold text-white shadow-md">
+            <span class="absolute -top-7 left-18 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f42b38] text-2xl font-extrabold text-white shadow-md">
               %
             </span>
 
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div class="mt-10 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start fade-in-up">
+      <div class="mt-5 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start fade-in-up">
         @for (box of boxOptions; track box.size) {
           <button
             type="button"
