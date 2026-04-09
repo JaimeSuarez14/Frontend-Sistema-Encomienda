@@ -41,7 +41,7 @@
 
     <nav class="space-y-2">
       @for (item of menuItems; track item.label) {
-      <a href="#"
+      <a [routerLink]="item.ruta"
         class="group flex items-center gap-3 rounded-xl px-3 py-3 transition-all duration-300 hover:translate-x-1"
         [ngClass]="
             item.active

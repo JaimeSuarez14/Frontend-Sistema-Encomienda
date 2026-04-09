@@ -1,1 +1,394 @@
-<p>encomiendas works!</p>
+<section class="min-h-screen bg-slate-100 px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl space-y-6">
+    <header class="flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Administración</p>
+        <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Gestión de encomiendas</h1>
+        <p class="mt-1 text-sm text-slate-500">Administra envíos, consulta estados y actualiza entregas.</p>
+      </div>
+
+      <button
+        type="button"
+        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 active:scale-[0.99]"
+        (click)="openCreateModal()"
+      >
+        <i class="bi bi-plus-lg text-sm" aria-hidden="true"></i>
+        Nueva encomienda
+      </button>
+    </header>
+
+    <section class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
+      <form [formGroup]="filterForm" class="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <label for="customer-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Buscar cliente
+          </label>
+          <div class="relative">
+            <i class="bi bi-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              id="customer-search"
+              type="text"
+              formControlName="customer"
+              placeholder="Nombre del cliente..."
+              class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+            >
+          </div>
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="status-filter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Estado
+          </label>
+          <select
+            id="status-filter"
+            formControlName="status"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+            @for (status of filterStatusOptions; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="start-date" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Desde
+          </label>
+          <input
+            id="start-date"
+            type="date"
+            formControlName="startDate"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="end-date" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Hasta
+          </label>
+          <input
+            id="end-date"
+            type="date"
+            formControlName="endDate"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+        </div>
+
+        <div class="flex items-end lg:col-span-2">
+          <button
+            type="button"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </form>
+    </section>
+
+    @if (filteredEncomiendas().length === 0) {
+      <div class="rounded-2xl bg-white px-6 py-14 text-center shadow-sm ring-1 ring-slate-200/70">
+        <i class="bi bi-inbox text-3xl text-slate-400" aria-hidden="true"></i>
+        <h2 class="mt-3 text-lg font-semibold text-slate-800">Sin resultados</h2>
+        <p class="mt-1 text-sm text-slate-500">No se encontraron encomiendas para los filtros aplicados.</p>
+      </div>
+    } @else {
+      <div class="hidden overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 md:block">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-left text-sm">
+            <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+              <tr>
+                <th class="px-4 py-3 font-semibold">ID de encomienda</th>
+                <th class="px-4 py-3 font-semibold">Cliente</th>
+                <th class="px-4 py-3 font-semibold">Dirección de envío</th>
+                <th class="px-4 py-3 font-semibold">Estado</th>
+                <th class="px-4 py-3 font-semibold">Fecha de envío</th>
+                <th class="px-4 py-3 font-semibold">Fecha de entrega</th>
+                <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (encomienda of filteredEncomiendas(); track encomienda.id) {
+                <tr class="border-b border-slate-100 transition-colors duration-200 hover:bg-slate-50/80 last:border-b-0">
+                  <td class="px-4 py-3 font-semibold text-slate-900">{{ encomienda.id }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ encomienda.customerName }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ encomienda.shippingAddress }}</td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(encomienda.status)">
+                      {{ encomienda.status }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-slate-700">{{ encomienda.sentDate | date: 'dd/MM/yyyy' }}</td>
+                  <td class="px-4 py-3 text-slate-700">
+                    {{ encomienda.deliveredDate ? (encomienda.deliveredDate | date: 'dd/MM/yyyy') : '—' }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+                        title="Ver"
+                        (click)="openViewModal(encomienda)"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-amber-200 hover:text-amber-600"
+                        title="Editar"
+                        (click)="openEditModal(encomienda)"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-rose-200 hover:text-rose-600"
+                        title="Eliminar"
+                        (click)="deleteEncomienda(encomienda)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid gap-4 md:hidden">
+        @for (encomienda of filteredEncomiendas(); track encomienda.id) {
+          <article class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID</p>
+                <p class="text-sm font-bold text-slate-900">{{ encomienda.id }}</p>
+              </div>
+              <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(encomienda.status)">
+                {{ encomienda.status }}
+              </span>
+            </div>
+
+            <div class="mt-4 space-y-2 text-sm text-slate-700">
+              <p><span class="font-semibold text-slate-500">Cliente:</span> {{ encomienda.customerName }}</p>
+              <p><span class="font-semibold text-slate-500">Dirección:</span> {{ encomienda.shippingAddress }}</p>
+              <p><span class="font-semibold text-slate-500">Envío:</span> {{ encomienda.sentDate | date: 'dd/MM/yyyy' }}</p>
+              <p>
+                <span class="font-semibold text-slate-500">Entrega:</span>
+                {{ encomienda.deliveredDate ? (encomienda.deliveredDate | date: 'dd/MM/yyyy') : '—' }}
+              </p>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                (click)="openViewModal(encomienda)"
+              >
+                Ver
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-amber-200 hover:text-amber-600"
+                (click)="openEditModal(encomienda)"
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-rose-200 hover:text-rose-600"
+                (click)="deleteEncomienda(encomienda)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+@if (activeModal()) {
+  <div
+    class="modal-overlay-enter fixed inset-0 z-50 flex items-start justify-center bg-slate-900/45 px-4 py-8 sm:items-center"
+    [class.modal-overlay-leave]="isModalClosing()"
+  >
+    <button
+      type="button"
+      aria-label="Cerrar modal"
+      class="absolute inset-0 cursor-default"
+      (click)="closeModal()"
+    ></button>
+
+    <article
+      class="modal-panel-enter relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200"
+      [class.modal-panel-leave]="isModalClosing()"
+    >
+      <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
+        <h2 class="text-lg font-bold text-slate-900 sm:text-xl">{{ modalTitle() }}</h2>
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
+          (click)="closeModal()"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+
+      <div class="max-h-[75vh] overflow-y-auto px-5 py-5 sm:px-6">
+        @if (activeModal() === 'view' && selectedEncomienda(); as encomienda) {
+          <div class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID de encomienda</p>
+                <p class="mt-1 text-sm font-bold text-slate-900">{{ encomienda.id }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Estado</p>
+                <span class="mt-1 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(encomienda.status)">
+                  {{ encomienda.status }}
+                </span>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Cliente</p>
+                <p class="mt-1 text-sm text-slate-700">{{ encomienda.customerName }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Dirección de envío</p>
+                <p class="mt-1 text-sm text-slate-700">{{ encomienda.shippingAddress }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Fecha de envío</p>
+                <p class="mt-1 text-sm text-slate-700">{{ encomienda.sentDate | date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Fecha de entrega</p>
+                <p class="mt-1 text-sm text-slate-700">
+                  {{ encomienda.deliveredDate ? (encomienda.deliveredDate | date: 'dd/MM/yyyy') : 'Sin registrar' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                (click)="openEditModal(encomienda)"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (isFormModal()) {
+          <form [formGroup]="orderForm" class="space-y-4" (ngSubmit)="submitForm()">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="customerName" class="mb-1 block text-sm font-semibold text-slate-700">Nombre del cliente</label>
+                <input
+                  id="customerName"
+                  type="text"
+                  formControlName="customerName"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Juan Pérez"
+                >
+                @if (hasControlError('customerName', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El nombre del cliente es obligatorio.</p>
+                }
+                @if (hasControlError('customerName', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="shippingAddress" class="mb-1 block text-sm font-semibold text-slate-700">Dirección de envío</label>
+                <input
+                  id="shippingAddress"
+                  type="text"
+                  formControlName="shippingAddress"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Av. Siempre Viva 123"
+                >
+                @if (hasControlError('shippingAddress', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">La dirección es obligatoria.</p>
+                }
+                @if (hasControlError('shippingAddress', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 8 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="status" class="mb-1 block text-sm font-semibold text-slate-700">Estado</label>
+                <select
+                  id="status"
+                  formControlName="status"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                  @for (status of statusOptions; track status.value) {
+                    <option [value]="status.value">{{ status.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div>
+                <label for="sentDate" class="mb-1 block text-sm font-semibold text-slate-700">Fecha de envío</label>
+                <input
+                  id="sentDate"
+                  type="date"
+                  formControlName="sentDate"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                @if (hasControlError('sentDate', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">La fecha de envío es obligatoria.</p>
+                }
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="deliveredDate" class="mb-1 block text-sm font-semibold text-slate-700">Fecha de entrega</label>
+                <input
+                  id="deliveredDate"
+                  type="date"
+                  formControlName="deliveredDate"
+                  [readonly]="!isDeliveredStatus()"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 read-only:cursor-not-allowed read-only:bg-slate-100"
+                >
+                @if (hasFormError('deliveredDateRequired')) {
+                  <p class="mt-1 text-xs text-rose-600">Si el estado es entregado, debes registrar fecha de entrega.</p>
+                }
+                @if (hasFormError('dateOrderInvalid')) {
+                  <p class="mt-1 text-xs text-rose-600">La fecha de entrega no puede ser anterior a la fecha de envío.</p>
+                }
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                {{ activeModal() === 'create' ? 'Guardar encomienda' : 'Actualizar encomienda' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </article>
+  </div>
+}
