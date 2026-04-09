@@ -55,6 +55,7 @@ export const routes: Routes = [
     path: "dashboard",
     title: "Panel de control",
     loadComponent: () => import('@admin/dashboard/dashboard').then((m) => m.Dashboard),
+    loadChildren: () => import('@admin/dashboard/routes').then(m => m.routes),
   },
   {
     path: '**',
