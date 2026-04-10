@@ -25,7 +25,7 @@ export class Dashboard {
       subtitle: 'Vista general',
       icon: 'bi bi-grid',
       active: true,
-      ruta: '',
+      ruta: '/dashboard',
     },
     {
       label: 'Encomiendas',
