@@ -1,6 +1,6 @@
 <section class="min-h-screen bg-slate-100 px-4 py-6 sm:px-6 md:pl-78 md:px-4">
   <div class="mx-auto max-w-7xl space-y-6">
-    <header class="flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:flex-row sm:items-center sm:justify-between">
+    <header class="animate-fade-in-down flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Administración</p>
         <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Gestión de encomiendas</h1>
@@ -17,7 +17,7 @@
       </button>
     </header>
 
-    <section class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
+    <section class="rounded-2xl animate-fade-in-down bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
       <form [formGroup]="filterForm" class="grid grid-cols-1 gap-3 lg:grid-cols-12">
         <div class="lg:col-span-4">
           <label for="customer-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -93,7 +93,7 @@
         <p class="mt-1 text-sm text-slate-500">No se encontraron encomiendas para los filtros aplicados.</p>
       </div>
     } @else {
-      <div class="hidden overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 md:block">
+      <div class="animate-fade-in-up hidden overflow-hidden  rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 md:block">
         <div class="overflow-x-auto">
           <table class="min-w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
@@ -212,7 +212,7 @@
 
 @if (activeModal()) {
   <div
-    class="modal-overlay-enter fixed inset-0 z-50 flex items-start justify-center bg-slate-900/45 px-4 py-8 sm:items-center"
+    class=" modal-overlay-enter fixed inset-0 z-50 flex items-start justify-center bg-slate-900/45 px-4 py-8 sm:items-center"
     [class.modal-overlay-leave]="isModalClosing()"
   >
     <button
@@ -223,7 +223,7 @@
     ></button>
 
     <article
-      class="modal-panel-enter relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200"
+      class="modal-panel-enter animate-fade-in-down relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200"
       [class.modal-panel-leave]="isModalClosing()"
     >
       <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
