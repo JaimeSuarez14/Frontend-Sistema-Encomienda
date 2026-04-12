@@ -10,5 +10,10 @@ export const routes: Routes = [
     path:"encomiendas",
     title: 'Encomiendas',
     loadComponent: () => import('@admin/encomiendas/encomiendas').then( m => m.Encomiendas),
+  },
+  {
+    path:"clientes",
+    title: 'Clientes',
+    loadComponent: () => import('@admin/clientes/clientes').then( m => m.Clientes),
   }
 ]

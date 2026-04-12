@@ -1,1 +1,453 @@
-<p>clientes works!</p>
+<section class="min-h-screen bg-slate-100 px-4 py-6 sm:px-6 md:pl-78 md:px-4">
+  <div class="mx-auto max-w-7xl space-y-6">
+    <header class="animate-fade-in-down flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Administración</p>
+        <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Gestión de clientes</h1>
+        <p class="mt-1 text-sm text-slate-500">Administra tus clientes, consulta información y actualiza datos.</p>
+      </div>
+
+      <button
+        type="button"
+        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 active:scale-[0.99]"
+        (click)="openCreateModal()"
+      >
+        <i class="bi bi-plus-lg text-sm" aria-hidden="true"></i>
+        Nuevo cliente
+      </button>
+    </header>
+
+    <section class="rounded-2xl animate-fade-in-down bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
+      <form [formGroup]="filterForm" class="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <label for="customer-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Buscar cliente
+          </label>
+          <div class="relative">
+            <i class="bi bi-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              id="customer-search"
+              type="text"
+              formControlName="search"
+              placeholder="Nombre, email o documento..."
+              class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+            >
+          </div>
+        </div>
+
+        <div class="lg:col-span-3">
+          <label for="status-filter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Estado
+          </label>
+          <select
+            id="status-filter"
+            formControlName="status"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+            @for (status of filterStatusOptions; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="tipo-documento-filter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Documento
+          </label>
+          <select
+            id="tipo-documento-filter"
+            formControlName="tipoDocumento"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+            <option value="Todos">Todos</option>
+            <option value="DNI">DNI</option>
+            <option value="RUC">RUC</option>
+          </select>
+        </div>
+
+        <div class="flex items-end lg:col-span-2">
+          <button
+            type="button"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </form>
+    </section>
+
+    @if (filteredClientes().length === 0) {
+      <div class="rounded-2xl bg-white px-6 py-14 text-center shadow-sm ring-1 ring-slate-200/70">
+        <i class="bi bi-inbox text-3xl text-slate-400" aria-hidden="true"></i>
+        <h2 class="mt-3 text-lg font-semibold text-slate-800">Sin resultados</h2>
+        <p class="mt-1 text-sm text-slate-500">No se encontraron clientes para los filtros aplicados.</p>
+      </div>
+    } @else {
+      <div class="animate-fade-in-up hidden overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 md:block">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-left text-sm">
+            <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+              <tr>
+                <th class="px-4 py-3 font-semibold">ID</th>
+                <th class="px-4 py-3 font-semibold">Cliente</th>
+                <th class="px-4 py-3 font-semibold">Documento</th>
+                <th class="px-4 py-3 font-semibold">Contacto</th>
+                <th class="px-4 py-3 font-semibold">Estado</th>
+                <th class="px-4 py-3 font-semibold">Registro</th>
+                <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (cliente of filteredClientes(); track cliente.id) {
+                <tr class="border-b border-slate-100 transition-colors duration-200 hover:bg-slate-50/80 last:border-b-0">
+                  <td class="px-4 py-3 font-semibold text-slate-900">{{ cliente.id }}</td>
+                  <td class="px-4 py-3">
+                    <div>
+                      <p class="font-semibold text-slate-900">{{ cliente.nombre }}</p>
+                      <p class="text-xs text-slate-500">{{ cliente.email }}</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div>
+                      <p class="font-semibold text-slate-700">{{ cliente.tipoDocumento }}</p>
+                      <p class="text-xs text-slate-500">{{ cliente.numeroDocumento }}</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-slate-700">
+                    <div>
+                      <p>{{ cliente.telefono }}</p>
+                      <p class="text-xs text-slate-500 truncate max-w-[150px]" title="{{ cliente.direccion }}">{{ cliente.direccion }}</p>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(cliente.status)">
+                      {{ cliente.status }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-slate-700">{{ cliente.fechaRegistro | date: 'dd/MM/yyyy' }}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+                        title="Ver"
+                        (click)="openViewModal(cliente)"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-amber-200 hover:text-amber-600"
+                        title="Editar"
+                        (click)="openEditModal(cliente)"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-rose-200 hover:text-rose-600"
+                        title="Eliminar"
+                        (click)="deleteCliente(cliente)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid gap-4 md:hidden">
+        @for (cliente of filteredClientes(); track cliente.id) {
+          <article class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID</p>
+                <p class="text-sm font-bold text-slate-900">{{ cliente.id }}</p>
+              </div>
+              <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(cliente.status)">
+                {{ cliente.status }}
+              </span>
+            </div>
+
+            <div class="mt-4 space-y-2 text-sm text-slate-700">
+              <p><span class="font-semibold text-slate-500">Nombre:</span> {{ cliente.nombre }}</p>
+              <p><span class="font-semibold text-slate-500">Documento:</span> {{ cliente.tipoDocumento }} - {{ cliente.numeroDocumento }}</p>
+              <p><span class="font-semibold text-slate-500">Email:</span> {{ cliente.email }}</p>
+              <p><span class="font-semibold text-slate-500">Teléfono:</span> {{ cliente.telefono }}</p>
+              <p><span class="font-semibold text-slate-500">Dirección:</span> {{ cliente.direccion }}</p>
+              <p><span class="font-semibold text-slate-500">Registro:</span> {{ cliente.fechaRegistro | date: 'dd/MM/yyyy' }}</p>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                (click)="openViewModal(cliente)"
+              >
+                Ver
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-amber-200 hover:text-amber-600"
+                (click)="openEditModal(cliente)"
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-rose-200 hover:text-rose-600"
+                (click)="deleteCliente(cliente)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+@if (activeModal()) {
+  <div
+    class="modal-overlay-enter fixed inset-0 z-50 flex items-start justify-center bg-slate-900/45 px-4 py-8 sm:items-center"
+    [class.modal-overlay-leave]="isModalClosing()"
+  >
+    <button
+      type="button"
+      aria-label="Cerrar modal"
+      class="absolute inset-0 cursor-default"
+      (click)="closeModal()"
+    ></button>
+
+    <article
+      class="modal-panel-enter animate-fade-in-down relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200"
+      [class.modal-panel-leave]="isModalClosing()"
+    >
+      <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
+        <h2 class="text-lg font-bold text-slate-900 sm:text-xl">{{ modalTitle() }}</h2>
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
+          (click)="closeModal()"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+
+      <div class="max-h-[75vh] overflow-y-auto px-5 py-5 sm:px-6">
+        @if (activeModal() === 'view' && selectedCliente(); as cliente) {
+          <div class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID de cliente</p>
+                <p class="mt-1 text-sm font-bold text-slate-900">{{ cliente.id }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Estado</p>
+                <span class="mt-1 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(cliente.status)">
+                  {{ cliente.status }}
+                </span>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Nombre completo</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.nombre }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ cliente.tipoDocumento }}</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.numeroDocumento }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Fecha de registro</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.fechaRegistro | date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Correo electrónico</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.email }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Teléfono</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.telefono }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Dirección</p>
+                <p class="mt-1 text-sm text-slate-700">{{ cliente.direccion }}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                (click)="openEditModal(cliente)"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (isFormModal()) {
+          <form [formGroup]="clienteForm" class="space-y-4" (ngSubmit)="submitForm()">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="nombre" class="mb-1 block text-sm font-semibold text-slate-700">Nombre completo</label>
+                <input
+                  id="nombre"
+                  type="text"
+                  formControlName="nombre"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Juan Pérez García"
+                >
+                @if (hasControlError('nombre', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El nombre es obligatorio.</p>
+                }
+                @if (hasControlError('nombre', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="tipoDocumento" class="mb-1 block text-sm font-semibold text-slate-700">Tipo de documento</label>
+                <select
+                  id="tipoDocumento"
+                  formControlName="tipoDocumento"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                  @for (tipo of tipoDocumentoOptions; track tipo.value) {
+                    <option [value]="tipo.value">{{ tipo.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div>
+                <label for="numeroDocumento" class="mb-1 block text-sm font-semibold text-slate-700">Número de documento</label>
+                <input
+                  id="numeroDocumento"
+                  type="text"
+                  formControlName="numeroDocumento"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. 45678912"
+                >
+                @if (hasControlError('numeroDocumento', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El número de documento es obligatorio.</p>
+                }
+                @if (hasFormError('documentLength')) {
+                  <p class="mt-1 text-xs text-rose-600">El DNI debe tener 8 dígitos y el RUC 11 dígitos.</p>
+                }
+                @if (hasFormError('documentInvalid')) {
+                  <p class="mt-1 text-xs text-rose-600">Solo se permiten números.</p>
+                }
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="email" class="mb-1 block text-sm font-semibold text-slate-700">Correo electrónico</label>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. cliente@email.com"
+                >
+                @if (hasControlError('email', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El correo es obligatorio.</p>
+                }
+                @if (hasControlError('email', 'email')) {
+                  <p class="mt-1 text-xs text-rose-600">El formato de correo no es válido.</p>
+                }
+              </div>
+
+              <div>
+                <label for="telefono" class="mb-1 block text-sm font-semibold text-slate-700">Teléfono</label>
+                <input
+                  id="telefono"
+                  type="tel"
+                  formControlName="telefono"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. 987654321"
+                >
+                @if (hasControlError('telefono', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El teléfono es obligatorio.</p>
+                }
+                @if (hasControlError('telefono', 'pattern')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener 9 dígitos numéricos.</p>
+                }
+              </div>
+
+              <div>
+                <label for="status" class="mb-1 block text-sm font-semibold text-slate-700">Estado</label>
+                <select
+                  id="status"
+                  formControlName="status"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                  @for (status of statusOptions; track status.value) {
+                    <option [value]="status.value">{{ status.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="direccion" class="mb-1 block text-sm font-semibold text-slate-700">Dirección</label>
+                <input
+                  id="direccion"
+                  type="text"
+                  formControlName="direccion"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Av. Siempre Viva 123, Lima"
+                >
+                @if (hasControlError('direccion', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">La dirección es obligatoria.</p>
+                }
+                @if (hasControlError('direccion', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 8 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="fechaRegistro" class="mb-1 block text-sm font-semibold text-slate-700">Fecha de registro</label>
+                <input
+                  id="fechaRegistro"
+                  type="date"
+                  formControlName="fechaRegistro"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                @if (hasControlError('fechaRegistro', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">La fecha de registro es obligatoria.</p>
+                }
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                {{ activeModal() === 'create' ? 'Guardar cliente' : 'Actualizar cliente' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </article>
+  </div>
+}

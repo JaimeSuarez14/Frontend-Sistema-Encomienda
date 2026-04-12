@@ -43,7 +43,7 @@ export class Dashboard {
       label: 'Clientes',
       subtitle: 'Base de clientes',
       icon: 'bi bi-people',
-      ruta: '',
+      ruta: '/dashboard/clientes',
     },
     {
       label: 'Reportes',
