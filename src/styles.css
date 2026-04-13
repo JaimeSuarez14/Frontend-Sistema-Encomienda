@@ -69,4 +69,68 @@
       transform: scale(0);
     }
   }
+
+  --animate-modal-overlay-enter: modalOverlayEnter 0.22s ease-out;
+
+  @keyframes modalOverlayEnter {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  --animate-modal-overlay-leave: modalOverlayLeave 0.2s ease-in;
+
+  @keyframes modalOverlayLeave {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  --animate-modal-panel-enter: modalPanelEnter 0.3s ease-out;
+
+  @keyframes modalPanelEnter {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  --animate-modal-panel-leave: modalPanelLeave 0.2s ease-in;
+
+  @keyframes modalPanelLeave {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+  }
+}
+
+.modal-overlay-enter {
+  animation: modalOverlayEnter 0.22s ease-out forwards;
+}
+
+.modal-overlay-leave {
+  animation: modalOverlayLeave 0.2s ease-in forwards;
+}
+
+.modal-panel-enter {
+  animation: modalPanelEnter 0.3s ease-out forwards;
+}
+
+.modal-panel-leave {
+  animation: modalPanelLeave 0.2s ease-in forwards;
 }

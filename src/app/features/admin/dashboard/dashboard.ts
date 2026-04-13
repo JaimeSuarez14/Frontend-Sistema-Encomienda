@@ -37,7 +37,7 @@ export class Dashboard {
       label: 'Rutas',
       subtitle: 'Seguimiento y mapas',
       icon: 'bi bi-signpost-split',
-      ruta: '',
+      ruta: '/dashboard/rutas-encomiendas',
     },
     {
       label: 'Clientes',

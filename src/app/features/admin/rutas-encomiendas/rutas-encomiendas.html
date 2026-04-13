@@ -1,0 +1,442 @@
+<section class="min-h-screen bg-slate-100 px-4 py-6 sm:px-6 md:pl-78 md:px-4">
+  <div class="mx-auto max-w-7xl space-y-6">
+    <header class="animate-fade-in-down flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Administración</p>
+        <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Gestión de rutas</h1>
+        <p class="mt-1 text-sm text-slate-500">Administra rutas de transporte, consulta estados y actualiza viajes.</p>
+      </div>
+
+      <button
+        type="button"
+        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 active:scale-[0.99]"
+        (click)="openCreateModal()"
+      >
+        <i class="bi bi-plus-lg text-sm" aria-hidden="true"></i>
+        Nueva ruta
+      </button>
+    </header>
+
+    <section class="rounded-2xl animate-fade-in-down bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
+      <form [formGroup]="filterForm" class="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <label for="route-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Buscar ruta
+          </label>
+          <div class="relative">
+            <i class="bi bi-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input
+              id="route-search"
+              type="text"
+              formControlName="search"
+              placeholder="Origen, destino, vehículo o chofer..."
+              class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+            >
+          </div>
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="status-filter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Estado
+          </label>
+          <select
+            id="status-filter"
+            formControlName="status"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+            @for (status of filterStatusOptions; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="start-date" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Desde
+          </label>
+          <input
+            id="start-date"
+            type="date"
+            formControlName="startDate"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+        </div>
+
+        <div class="lg:col-span-2">
+          <label for="end-date" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Hasta
+          </label>
+          <input
+            id="end-date"
+            type="date"
+            formControlName="endDate"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+          >
+        </div>
+
+        <div class="flex items-end lg:col-span-2">
+          <button
+            type="button"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </form>
+    </section>
+
+    @if (filteredRutas().length === 0) {
+      <div class="rounded-2xl bg-white px-6 py-14 text-center shadow-sm ring-1 ring-slate-200/70">
+        <i class="bi bi-signpost-split text-3xl text-slate-400" aria-hidden="true"></i>
+        <h2 class="mt-3 text-lg font-semibold text-slate-800">Sin resultados</h2>
+        <p class="mt-1 text-sm text-slate-500">No se encontraron rutas para los filtros aplicados.</p>
+      </div>
+    } @else {
+      <div class="animate-fade-in-up hidden overflow-hidden  rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 md:block">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-left text-sm">
+            <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+              <tr>
+                <th class="px-4 py-3 font-semibold">ID de ruta</th>
+                <th class="px-4 py-3 font-semibold">Origen</th>
+                <th class="px-4 py-3 font-semibold">Destino</th>
+                <th class="px-4 py-3 font-semibold">Estado</th>
+                <th class="px-4 py-3 font-semibold">Fecha de salida</th>
+                <th class="px-4 py-3 font-semibold">Fecha de llegada</th>
+                <th class="px-4 py-3 font-semibold">Vehículo</th>
+                <th class="px-4 py-3 font-semibold">Chofer</th>
+                <th class="px-4 py-3 font-semibold text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (ruta of filteredRutas(); track ruta.id) {
+                <tr class="border-b border-slate-100 transition-colors duration-200 hover:bg-slate-50/80 last:border-b-0">
+                  <td class="px-4 py-3 font-semibold text-slate-900">{{ ruta.id }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ ruta.origin }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ ruta.destination }}</td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(ruta.status)">
+                      {{ ruta.status }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-slate-700">{{ ruta.departureDate | date: 'dd/MM/yyyy' }}</td>
+                  <td class="px-4 py-3 text-slate-700">
+                    {{ ruta.arrivalDate ? (ruta.arrivalDate | date: 'dd/MM/yyyy') : '—' }}
+                  </td>
+                  <td class="px-4 py-3 text-slate-700">{{ ruta.vehicle }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ ruta.driver }}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+                        title="Ver"
+                        (click)="openViewModal(ruta)"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-amber-200 hover:text-amber-600"
+                        title="Editar"
+                        (click)="openEditModal(ruta)"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-rose-200 hover:text-rose-600"
+                        title="Eliminar"
+                        (click)="deleteRuta(ruta)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid gap-4 md:hidden">
+        @for (ruta of filteredRutas(); track ruta.id) {
+          <article class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID</p>
+                <p class="text-sm font-bold text-slate-900">{{ ruta.id }}</p>
+              </div>
+              <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(ruta.status)">
+                {{ ruta.status }}
+              </span>
+            </div>
+
+            <div class="mt-4 space-y-2 text-sm text-slate-700">
+              <p><span class="font-semibold text-slate-500">Origen:</span> {{ ruta.origin }}</p>
+              <p><span class="font-semibold text-slate-500">Destino:</span> {{ ruta.destination }}</p>
+              <p><span class="font-semibold text-slate-500">Salida:</span> {{ ruta.departureDate | date: 'dd/MM/yyyy' }}</p>
+              <p>
+                <span class="font-semibold text-slate-500">Llegada:</span>
+                {{ ruta.arrivalDate ? (ruta.arrivalDate | date: 'dd/MM/yyyy') : '—' }}
+              </p>
+              <p><span class="font-semibold text-slate-500">Vehículo:</span> {{ ruta.vehicle }}</p>
+              <p><span class="font-semibold text-slate-500">Chofer:</span> {{ ruta.driver }}</p>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600"
+                (click)="openViewModal(ruta)"
+              >
+                Ver
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-amber-200 hover:text-amber-600"
+                (click)="openEditModal(ruta)"
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-rose-200 hover:text-rose-600"
+                (click)="deleteRuta(ruta)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+@if (activeModal()) {
+  <div
+    class=" modal-overlay-enter fixed inset-0 z-50 flex items-start justify-center bg-slate-900/45 px-4 py-8 sm:items-center"
+    [class.modal-overlay-leave]="isModalClosing()"
+  >
+    <button
+      type="button"
+      aria-label="Cerrar modal"
+      class="absolute inset-0 cursor-default"
+      (click)="closeModal()"
+    ></button>
+
+    <article
+      class="modal-panel-enter animate-fade-in-down relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200"
+      [class.modal-panel-leave]="isModalClosing()"
+    >
+      <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
+        <h2 class="text-lg font-bold text-slate-900 sm:text-xl">{{ modalTitle() }}</h2>
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
+          (click)="closeModal()"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+
+      <div class="max-h-[75vh] overflow-y-auto px-5 py-5 sm:px-6">
+        @if (activeModal() === 'view' && selectedRuta(); as ruta) {
+          <div class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">ID de ruta</p>
+                <p class="mt-1 text-sm font-bold text-slate-900">{{ ruta.id }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Estado</p>
+                <span class="mt-1 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" [ngClass]="getStatusClasses(ruta.status)">
+                  {{ ruta.status }}
+                </span>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Origen</p>
+                <p class="mt-1 text-sm text-slate-700">{{ ruta.origin }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Destino</p>
+                <p class="mt-1 text-sm text-slate-700">{{ ruta.destination }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Fecha de salida</p>
+                <p class="mt-1 text-sm text-slate-700">{{ ruta.departureDate | date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Fecha de llegada</p>
+                <p class="mt-1 text-sm text-slate-700">
+                  {{ ruta.arrivalDate ? (ruta.arrivalDate | date: 'dd/MM/yyyy') : 'Sin registrar' }}
+                </p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Vehículo</p>
+                <p class="mt-1 text-sm text-slate-700">{{ ruta.vehicle }}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Chofer</p>
+                <p class="mt-1 text-sm text-slate-700">{{ ruta.driver }}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                (click)="openEditModal(ruta)"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (isFormModal()) {
+          <form [formGroup]="routeForm" class="space-y-4" (ngSubmit)="submitForm()">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label for="origin" class="mb-1 block text-sm font-semibold text-slate-700">Origen</label>
+                <input
+                  id="origin"
+                  type="text"
+                  formControlName="origin"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Lima"
+                >
+                @if (hasControlError('origin', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El origen es obligatorio.</p>
+                }
+                @if (hasControlError('origin', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="destination" class="mb-1 block text-sm font-semibold text-slate-700">Destino</label>
+                <input
+                  id="destination"
+                  type="text"
+                  formControlName="destination"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Cusco"
+                >
+                @if (hasControlError('destination', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El destino es obligatorio.</p>
+                }
+                @if (hasControlError('destination', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="vehicle" class="mb-1 block text-sm font-semibold text-slate-700">Vehículo</label>
+                <input
+                  id="vehicle"
+                  type="text"
+                  formControlName="vehicle"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Camión A-001"
+                >
+                @if (hasControlError('vehicle', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El vehículo es obligatorio.</p>
+                }
+                @if (hasControlError('vehicle', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="driver" class="mb-1 block text-sm font-semibold text-slate-700">Chofer</label>
+                <input
+                  id="driver"
+                  type="text"
+                  formControlName="driver"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                  placeholder="Ej. Juan Pérez"
+                >
+                @if (hasControlError('driver', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">El chofer es obligatorio.</p>
+                }
+                @if (hasControlError('driver', 'minlength')) {
+                  <p class="mt-1 text-xs text-rose-600">Debe tener al menos 3 caracteres.</p>
+                }
+              </div>
+
+              <div>
+                <label for="status" class="mb-1 block text-sm font-semibold text-slate-700">Estado</label>
+                <select
+                  id="status"
+                  formControlName="status"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                  @for (status of statusOptions; track status.value) {
+                    <option [value]="status.value">{{ status.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div>
+                <label for="departureDate" class="mb-1 block text-sm font-semibold text-slate-700">Fecha de salida</label>
+                <input
+                  id="departureDate"
+                  type="date"
+                  formControlName="departureDate"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+                >
+                @if (hasControlError('departureDate', 'required')) {
+                  <p class="mt-1 text-xs text-rose-600">La fecha de salida es obligatoria.</p>
+                }
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="arrivalDate" class="mb-1 block text-sm font-semibold text-slate-700">Fecha de llegada</label>
+                <input
+                  id="arrivalDate"
+                  type="date"
+                  formControlName="arrivalDate"
+                  [readonly]="!isCompletedStatus()"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 read-only:cursor-not-allowed read-only:bg-slate-100"
+                >
+                @if (hasFormError('arrivalDateRequired')) {
+                  <p class="mt-1 text-xs text-rose-600">Si el estado es completado, debes registrar fecha de llegada.</p>
+                }
+                @if (hasFormError('dateOrderInvalid')) {
+                  <p class="mt-1 text-xs text-rose-600">La fecha de llegada no puede ser anterior a la fecha de salida.</p>
+                }
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                (click)="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                {{ activeModal() === 'create' ? 'Guardar ruta' : 'Actualizar ruta' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </article>
+  </div>
+}
