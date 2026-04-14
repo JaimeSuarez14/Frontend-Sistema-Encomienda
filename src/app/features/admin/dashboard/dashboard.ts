@@ -46,6 +46,12 @@ export class Dashboard {
       ruta: '/dashboard/clientes',
     },
     {
+      label: 'Usuarios',
+      subtitle: 'Usuarios',
+      icon: 'bi bi-graph-up-arrow',
+      ruta: '',
+    },
+    {
       label: 'Reportes',
       subtitle: 'Indicadores y métricas',
       icon: 'bi bi-graph-up-arrow',
