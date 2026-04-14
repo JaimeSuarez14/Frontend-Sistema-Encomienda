@@ -49,7 +49,7 @@ export class Dashboard {
       label: 'Usuarios',
       subtitle: 'Usuarios',
       icon: 'bi bi-graph-up-arrow',
-      ruta: '',
+      ruta: '/dashboard/usuarios',
     },
     {
       label: 'Reportes',
